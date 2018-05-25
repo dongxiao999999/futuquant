@@ -127,9 +127,9 @@ def make_order_and_cancel(api_svr_ip, api_svr_port, unlock_password, test_code, 
 
 
 if __name__ == "__main__":
-    API_SVR_IP = '119.29.141.202'
+    API_SVR_IP = '127.0.0.1'
     API_SVR_PORT = 11111
-    UNLOCK_PASSWORD = "123"
+    UNLOCK_PASSWORD = "Dx1111"
     TEST_CODE = 'HK.00700'  # 'US.BABA' 'HK.00700'
     TRADE_ENV = 1
 
