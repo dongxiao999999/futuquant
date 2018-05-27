@@ -11,19 +11,19 @@ quote_ctx = ft.OpenQuoteContext(host='127.0.0.1', port=11111)
 _, table1 = quote_ctx.get_stock_basicinfo(market='SH', stock_type='STOCK')
 # print(basic_info_table)
 # print(quote_ctx.get_stock_basicinfo(market='SZ', stock_type='STOCK'))
-# _, table2 = quote_ctx.get_stock_basicinfo(market='SZ', stock_type='STOCK')
+_, table2 = quote_ctx.get_stock_basicinfo(market='SZ', stock_type='STOCK')
 
 # 打印获取股票信息market: 市场标识, string，例如，”HK”，”US”；具体见市场标识说明
 # RET_OK, basic_info_table = quote_ctx.get_stock_basicinfo(market='SZ', stock_type='STOCK')
-# print(quote_ctx.get_stock_basicinfo(market='HK', stock_type='STOCK'))
-# print(quote_ctx.get_stock_basicinfo(market='HK', stock_type='IDX'))
-# print(quote_ctx.get_stock_basicinfo(market='HK', stock_type='ETF'))
-# print(quote_ctx.get_stock_basicinfo(market='HK', stock_type='WARRANT'))
-# print(quote_ctx.get_stock_basicinfo(market='HK', stock_type='BOND'))
+_, table3 = quote_ctx.get_stock_basicinfo(market='HK', stock_type='STOCK')
+_, table4 = quote_ctx.get_stock_basicinfo(market='HK', stock_type='IDX')
+_, table5 = quote_ctx.get_stock_basicinfo(market='HK', stock_type='ETF')
+_, table6 = quote_ctx.get_stock_basicinfo(market='HK', stock_type='WARRANT')
+_, table7 = quote_ctx.get_stock_basicinfo(market='HK', stock_type='BOND')
 
-# print(quote_ctx.get_stock_basicinfo(market='US', stock_type='STOCK'))
+_, table8 = quote_ctx.get_stock_basicinfo(market='US', stock_type='STOCK')
 
-tables = [table1]
+tables = [table1, table2]
 # 第一步写入股票信息到数据库
 # db = MySQLDatabase('lim', user='limapp', passwd='hackch', host='lim.app')
 db = MySQLDatabase('stock', user='root', passwd='root', host='localhost')
