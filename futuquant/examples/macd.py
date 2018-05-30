@@ -2,6 +2,7 @@
 import talib
 import math
 import datetime
+import time
 
 from futuquant import OpenQuoteContext
 from futuquant import OpenHKTradeContext, OpenUSTradeContext
@@ -60,14 +61,17 @@ class MACD(object):
         handle stock data for trading signal, and make order
         """
         # 读取历史数据，使用sma方式计算均线准确度和数据长度无关，但是在使用ema方式计算均线时建议将历史数据窗口适当放大，结果会更加准确
-        today = datetime.datetime.today()
+        # today = datetime.datetime.today()
+        today = datetime.datetime.strptime('2018-04-10', '%Y-%m-%d')
         pre_day = (today - datetime.timedelta(days=self.observation)).strftime('%Y-%m-%d')
+        pre_day = '2014-06-16'
         _, prices = self.quote_ctx.get_history_kline(self.stock, start=pre_day)
 
         # 用talib计算MACD取值，得到三个时间序列数组，分别为 macd, signal 和 hist
         # macd 是长短均线的差值，signal 是 macd 的均线
         # 使用 macd 策略有几种不同的方法，我们这里采用 macd 线突破 signal 线的判断方法
         macd, signal, hist = talib.MACD(prices['close'].values, self.short_period, self.long_period, self.smooth_period)
+        # temp = talib.MACD(prices['close'].values, self.short_period, self.long_period, self.smooth_period)
 
         # 如果macd从上往下跌破macd_signal
         if macd[-1] < signal[-1] and macd[-2] > signal[-2]:
