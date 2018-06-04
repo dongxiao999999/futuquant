@@ -246,9 +246,9 @@ if __name__ == "__main__":
     quote_context = OpenQuoteContext(host='127.0.0.1', port=11111)
 
     # 获取实时数据
-    _example_stock_quote(quote_context)
-    _example_get_market_snapshot(quote_context)
-    # _example_cur_kline(quote_context)
+    # _example_stock_quote(quote_context)
+    # _example_get_market_snapshot(quote_context)
+    _example_cur_kline(quote_context)
     # _example_rt_ticker(quote_context)
     # _example_order_book(quote_context)
     # _example_get_trade_days(quote_context)

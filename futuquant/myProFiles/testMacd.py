@@ -11,6 +11,9 @@ pre_day = '2017-05-30'
 # 获取数据
 # _, df = pd.read_csv('C:/Users/HXWD/Desktop/000001.csv', encoding='gbk')
 _, df = quote_ctx.get_history_kline("HK.00700", start=pre_day)
+ret_data = stockData.getStockInfoRealTime(quote_ctx, stockCode='HK.00700')
+
+_, df = quote_ctx.get_history_kline("HK.00700", start=pre_day)
 df.columns = ['code', 'time_key', 'open', 'close', 'high', 'low', 'pe_ratio', 'turnover_rate', 'volume', 'turnover',
               'change_rate']
 # df = df[['date', 'open', 'high', 'low', 'close', 'volume', 'amt']]
