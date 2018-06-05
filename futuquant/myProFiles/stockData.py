@@ -46,3 +46,30 @@ def getCurKlines(quote_ctx, stockCode, ktype, num):
         print("%s %s: %s" % (stockCode, ktype, ret_data))
         exit()
     return ret_data
+
+
+def get_EMA(df, N):
+    for i in range(len(df)):
+        if i == 0:
+            df.ix[i, 'ema'] = df.ix[i, 'close']
+        if i > 0:
+            df.ix[i, 'ema'] = (2 * df.ix[i, 'close'] + (N - 1) * df.ix[i - 1, 'ema']) / (N + 1)
+    ema = list(df['ema'])
+    return ema
+
+
+def getMACD(df, short=12, long=26, M=9):
+    a = get_EMA(df, short)
+    b = get_EMA(df, long)
+    df['dif'] = pd.Series(a) - pd.Series(b)
+    for i in range(len(df)):
+        if i == 0:
+            df.ix[i, 'dea'] = df.ix[i, 'dif']
+        if i > 0:
+            df.ix[i, 'dea'] = (2 * df.ix[i, 'dif'] + (M - 1) * df.ix[i - 1, 'dea']) / (M + 1)
+    df['macd'] = 2 * (df['dif'] - df['dea'])
+    df['absMacd'] = abs(df['macd'])
+    meanDf = df.mean(0)
+    meanMacd = meanDf['absMacd']
+    df['macdRatio'] = df['absMacd'] / meanMacd
+    return df

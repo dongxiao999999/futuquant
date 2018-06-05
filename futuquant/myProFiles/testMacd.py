@@ -50,6 +50,7 @@ def get_MACD(df, short=12, long=26, M=9):
         if i > 0:
             df.ix[i, 'dea'] = (2 * df.ix[i, 'dif'] + (M - 1) * df.ix[i - 1, 'dea']) / (M + 1)
     df['macd'] = 2 * (df['dif'] - df['dea'])
+    df = df.sort_index(ascending=True)
     return df
 
 

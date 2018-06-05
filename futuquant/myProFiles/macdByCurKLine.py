@@ -8,7 +8,7 @@ from futuquant.myProFiles import stockData
 
 quote_ctx = ft.OpenQuoteContext(host='127.0.0.1', port=11111)
 # 获取数据
-df = stockData.getCurKlines(quote_ctx, "HK.00700", "K_5M", 100)
+df = stockData.getCurKlines(quote_ctx, "HK.00700", "K_15M", 200)
 # df.columns = ['code', 'time_key', 'open', 'close', 'high', 'low', 'pe_ratio', 'turnover_rate', 'volume', 'turnover']
 df = df[['close', 'time_key']]
 
@@ -42,5 +42,4 @@ def get_MACD(df, short=12, long=26, M=9):
 
 
 get_MACD(df, 12, 26, 9)
-df = df[['time_key', 'dif', 'dea', 'macd', 'absMacd', 'macdRatio']]
 print(df)
