@@ -14,7 +14,7 @@ class MACD(object):
     # API parameter setting
     api_svr_ip = '127.0.0.1'  # 账户登录的牛牛客户端PC的IP, 本机默认为127.0.0.1
     api_svr_port = 11111  # 富途牛牛端口，默认为11111
-    unlock_password = "Dx1111"  # 美股和港股交易解锁密码
+    unlock_password = "111111"  # 美股和港股交易解锁密码
     trade_env = 1  # 0: 真实交易 1: 仿真交易（仿真交易无密码验证，美股暂不支持仿真）
 
     # def myMACD(prices, fastperiod=12, slowperiod=26, signalperiod=9):
