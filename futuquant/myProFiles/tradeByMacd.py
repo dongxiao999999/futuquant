@@ -107,10 +107,12 @@ def make_order_and_cancel(api_svr_ip, api_svr_port, unlock_password, test_code, 
             order_type = 2  # 美股限价单
 
         # 下单
-        df = stockData.getCurKlines(quote_ctx, "HK.00700", "K_1M", 100)
+        df = stockData.getCurKlines(quote_ctx, "HK.00700", "K_5M", 100)
         df = stockData.getMACD(df)
         curData = df.iloc[-1]  # 当前时间
         lastData = df.iloc[-2]  # 上一时间
+        if curData['open'] == 0 or curData['close'] == 0:
+            continue
         if order_id == 0:  # 未下单
             if curData['dif'] > 0 and curData['dea'] > 0:  # 0轴上方，多头
                 if curData['macd'] > 0 and lastData['macd'] < 0:  # 0轴上方macd金叉,购买股票
