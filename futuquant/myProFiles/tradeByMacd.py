@@ -51,7 +51,13 @@ def make_order_and_cancel(api_svr_ip, api_svr_port, unlock_password, test_code, 
     lot_size = 0
     is_unlock_trade = False
     is_fire_trade = False
-    order_id = 0
+    ret_code, ret_data = trade_ctx.position_list_query(strcode='HK.00700', stocktype='', pl_ratio_min='',
+                                                       pl_ratio_max='',
+                                                       envtype=1)
+    if ret_data.empty is False:
+        order_id = 1
+    else:
+        order_id = 0
     while True:
         sleep(2)
         # 解锁交易
@@ -127,8 +133,29 @@ def make_order_and_cancel(api_svr_ip, api_svr_port, unlock_password, test_code, 
         # 卖单
         if order_id != 0:
             order_side = 1
+            _, position_data = trade_ctx.position_list_query(strcode='HK.00700', stocktype='', pl_ratio_min='',
+                                                               pl_ratio_max='',
+                                                               envtype=trade_env)
+            # 持仓收益 > 1% 时卖出，退出这次循环
+            if position_data.ix[0]['pl_ratio'] > 1:
+                ret_code, ret_data = trade_ctx.place_order(price=price1, qty=qty, strcode=test_code,
+                                                           orderside=order_side, ordertype=order_type,
+                                                           envtype=trade_env)
+                print('卖单ret={} data={}'.format(ret_code, ret_data))
+                if ret_code == 0:
+                    order_id = 0
+                continue
+            elif position_data.ix[0]['pl_ratio'] < -3:  # 持仓收益 < -3% 时止损出场
+                ret_code, ret_data = trade_ctx.place_order(price=price1, qty=qty, strcode=test_code,
+                                                           orderside=order_side, ordertype=order_type,
+                                                           envtype=trade_env)
+                print('卖单ret={} data={}'.format(ret_code, ret_data))
+                if ret_code == 0:
+                    order_id = 0
+                continue
+
             if curData['dif'] < 0 and curData['dea'] < 0:  # 0轴下方，空头
-                if (curData['macd'] < 0 and lastData['macd'] > 0) or curData['macdRatio'] > 1:  # 0轴上方macd死叉或者在0轴之前形成死叉，0轴之后放大,卖出股票
+                if (curData['macd'] < 0 and lastData['macd'] > 0) or curData['macdRatio'] > 1:  # 0轴下方macd死叉或者在0轴之前形成死叉，0轴之后放大,卖出股票
                     ret_code, ret_data = trade_ctx.place_order(price=price1, qty=qty, strcode=test_code,
                                                                orderside=order_side, ordertype=order_type,
                                                                envtype=trade_env)
@@ -146,6 +173,7 @@ def make_order_and_cancel(api_svr_ip, api_svr_port, unlock_password, test_code, 
     # destroy object
     quote_ctx.close()
     trade_ctx.close()
+
 
 def getPrice(quote_ctx, test_code, is_hk_trade):
     ret, data = quote_ctx.get_order_book(test_code)  # 得到第十档数据
@@ -172,4 +200,3 @@ if __name__ == "__main__":
     TRADE_ENV = 1
 
     make_order_and_cancel(API_SVR_IP, API_SVR_PORT, UNLOCK_PASSWORD, TEST_CODE, TRADE_ENV)
-

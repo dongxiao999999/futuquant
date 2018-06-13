@@ -1,9 +1,5 @@
 import pandas as pd
 import futuquant as ft
-import numpy as np
-import datetime
-import time
-
 from futuquant.myProFiles import stockData
 
 quote_ctx = ft.OpenQuoteContext(host='127.0.0.1', port=11111)
